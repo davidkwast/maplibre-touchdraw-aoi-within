@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Disable map rotation</title>
+    <meta property="og:description" content="Prevent users from rotating a map." />
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.1.0/dist/maplibre-gl.css' />
+    <script src='https://unpkg.com/maplibre-gl@5.1.0/dist/maplibre-gl.js'></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <style>
+        #info {
+            display: block;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            margin: 0px;
+            padding: 10px;
+            font-size: 12px;
+            text-align: center;
+            color: #222;
+            background: #fff;
+        }
+    </style>
+    <div id="map"></div>
+    <pre id="info"></pre>
+
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
+
+    <script>
+
+        const shape = {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                'type': 'Polygon',
+                'coordinates': [
+                    [
+                        [-67.13734351262877, 45.137451890638886],
+                        [-66.96466, 44.8097],
+                        [-68.03252, 44.3252],
+                        [-69.06, 43.98],
+                        [-70.11617, 43.68405],
+                        [-70.64573401557249, 43.090083319667144],
+                        [-70.75102474636725, 43.08003225358635],
+                        [-70.79761105007827, 43.21973948828747],
+                        [-70.98176001655037, 43.36789581966826],
+                        [-70.94416541205806, 43.46633942318431],
+                        [-71.08482, 45.3052400000002],
+                        [-70.6600225491012, 45.46022288673396],
+                        [-70.30495378282376, 45.914794623389355],
+                        [-70.00014034695016, 46.69317088478567],
+                        [-69.23708614772835, 47.44777598732787],
+                        [-68.90478084987546, 47.184794623394396],
+                        [-68.23430497910454, 47.35462921812177],
+                        [-67.79035274928509, 47.066248887716995],
+                        [-67.79141211614706, 45.702585354182816],
+                        [-67.13734351262877, 45.137451890638886]
+                    ]
+                ]
+            }
+        };
+
+
+        var draw = {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -64.06889109950872,
+                            43.18533098490652
+                        ],
+                        [
+                            -64.07114708590716,
+                            43.20227475169026
+                        ],
+                        [
+                            -64.07789687771239,
+                            43.21857181812679
+                        ],
+                        [
+                            -64.08888422578067,
+                            43.233595138514914
+                        ],
+                        [
+                            -64.1036890002126,
+                            43.24676623531003
+                        ],
+                        [
+                            -64.12174301152943,
+                            43.25757760311025
+                        ],
+                        [
+                            -64.14235172880394,
+                            43.26561241741017
+                        ],
+                        [
+                            -64.16472107894906,
+                            43.270560759270744
+                        ],
+                        [
+                            -64.18798828124898,
+                            43.27223170069827
+                        ],
+                        [
+                            -64.2112554835489,
+                            43.270560759270744
+                        ],
+                        [
+                            -64.23362483369402,
+                            43.26561241741017
+                        ],
+                        [
+                            -64.25423355096852,
+                            43.25757760311025
+                        ],
+                        [
+                            -64.27228756228536,
+                            43.24676623531003
+                        ],
+                        [
+                            -64.28709233671728,
+                            43.233595138514914
+                        ],
+                        [
+                            -64.29807968478556,
+                            43.21857181812679
+                        ],
+                        [
+                            -64.30482947659081,
+                            43.20227475169026
+                        ],
+                        [
+                            -64.30708546298925,
+                            43.18533098490652
+                        ],
+                        [
+                            -64.30476464228286,
+                            43.16839191975315
+                        ],
+                        [
+                            -64.29795988652293,
+                            43.15210824243544
+                        ],
+                        [
+                            -64.28693581258298,
+                            43.137104960302786
+                        ],
+                        [
+                            -64.27211814157756,
+                            43.12395750027718
+                        ],
+                        [
+                            -64.2540770264542,
+                            43.11316976928487
+                        ],
+                        [
+                            -64.23350503489395,
+                            43.10515499333328
+                        ],
+                        [
+                            -64.21119064886092,
+                            43.100220040684405
+                        ],
+                        [
+                            -64.18798828124898,
+                            43.09855380092571
+                        ],
+                        [
+                            -64.16478591363705,
+                            43.100220040684405
+                        ],
+                        [
+                            -64.14247152760402,
+                            43.10515499333328
+                        ],
+                        [
+                            -64.12189953604376,
+                            43.11316976928487
+                        ],
+                        [
+                            -64.10385842092039,
+                            43.12395750027718
+                        ],
+                        [
+                            -64.08904074991497,
+                            43.137104960302786
+                        ],
+                        [
+                            -64.07801667597504,
+                            43.15210824243544
+                        ],
+                        [
+                            -64.0712119202151,
+                            43.16839191975315
+                        ],
+                        [
+                            -64.06889109950872,
+                            43.18533098490652
+                        ]
+                    ]
+                ]
+            }
+        };
+
+
+        const inverse_shape = turf.difference(turf.featureCollection([
+            turf.bboxPolygon(turf.bbox(
+                turf.buffer(shape, 999, { units: "miles" })
+            )), shape
+        ]));
+
+
+
+
+        const map = new maplibregl.Map({
+            container: 'map', // container id
+            style:
+                'https://demotiles.maplibre.org/style.json', //stylesheet location
+            center: [-69, 45],
+            zoom: 6
+        });
+
+
+        //map.dragPan.disable();
+
+        map.dragRotate.disable();
+
+        map.keyboard.disable();
+
+        // disable map rotation using touch rotation gesture
+        map.touchZoomRotate.disableRotation();
+
+        map.scrollZoom.disable();
+
+
+
+        const refresh_info = (e) => {
+            document.getElementById('info').innerHTML =
+                `${JSON.stringify(e.type)}<br />${JSON.stringify(e.lngLat.wrap())}`;
+        }
+
+
+        map.on('load', () => {
+
+
+
+            map.addSource('shape', {
+                'type': 'geojson',
+                'data': shape
+            });
+            map.addLayer({
+                'id': 'shape',
+                'type': 'line',
+                'source': 'shape',
+                'paint': { 'line-color': '#00F' }
+            });
+
+
+            map.addSource('draw', {
+                'type': 'geojson',
+                'data': draw
+            });
+            map.addLayer({
+                'id': 'draw',
+                'type': 'fill',
+                'source': 'draw',
+                'paint': { 'fill-color': '#00F' }
+            });
+
+
+        });
+
+
+
+
+        const paint = (e) => {
+            var point = turf.point([e.lngLat.lng, e.lngLat.lat]);
+            var buffered = turf.buffer(point, 15, { units: "miles" });
+            console.log(buffered);
+
+            draw = turf.union(turf.featureCollection([draw, buffered]));
+
+            map.getSource('draw').setData(turf.difference(turf.featureCollection([draw, inverse_shape])));
+        }
+
+
+
+        map.on('click', (e) => {
+            e.preventDefault();
+
+            refresh_info(e);
+
+
+            paint(e);
+        });
+
+
+        map.on('mousedown', (e) => {
+            e.preventDefault();
+
+            refresh_info(e);
+        });
+
+        map.on('dblclick', (e) => {
+            e.preventDefault();
+
+            refresh_info(e);
+        });
+
+
+        // map.on('mousemove', (e) => {
+        //     e.preventDefault();
+
+        //     refresh_info(e);
+        // });
+
+
+        map.on('touchstart', (e) => {
+            e.preventDefault();
+
+            refresh_info(e);
+        });
+
+        map.on('touchend', (e) => {
+            e.preventDefault();
+
+            refresh_info(e);
+        });
+
+        map.on('touchmove', (e) => {
+            e.preventDefault();
+
+            refresh_info(e);
+
+
+
+            paint(e);
+
+        });
+
+        map.on('touchcancel', (e) => {
+            e.preventDefault();
+
+            refresh_info(e);
+        });
+
+
+
+
+    </script>
+</body>
+
+</html>
